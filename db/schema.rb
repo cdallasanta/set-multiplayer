@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_05_18_171348) do
   create_table "games", force: :cascade do |t|
     t.integer "board", array: true
     t.integer "deck", array: true
+    t.string "room"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
