@@ -1,11 +1,13 @@
-class GameController < ApplicationController
+class Api::GamesController < ApplicationController
   def create
+    byebug
     game = Game.create
     game.players << Player.create(name: game_props[:username])
     render json: game
   end
 
   def show
+    byebug
     game = Game.find_by(room: params[:room])
     if !game.players.any? {|p| p.name == game_props[:username]}
       game.players << Player.create(name: game_props[:username])
