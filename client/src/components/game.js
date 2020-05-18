@@ -1,4 +1,5 @@
 import React from 'react';
+import GameWebSocket from './gameWebSocket';
 import CARDS from '../constants/cards';
 
 class Game extends React.Component {
@@ -19,6 +20,13 @@ class Game extends React.Component {
         {this.listNames()}
       </ul>
       <button onClick={this.props.handleLogout}>Logout</button>
+
+      <GameWebSocket
+          CableApp={this.props.CableApp}
+          fetchGame={this.fetchGame}
+          gameId={this.props.gameData.id}
+          broadcastReceived={this.props.broadcastReceived}
+        />
     </>
   }
 }

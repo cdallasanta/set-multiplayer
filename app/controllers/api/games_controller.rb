@@ -23,7 +23,13 @@ class Api::GamesController < ApplicationController
 
     if !game.players.any? {|p| p.name == params[:username]}
       game.players << Player.create(name: params[:username])
-      GamesChannel.broadcast_to(game, game)
+      GamesChannel.broadcast_to(game, {
+        id: game.id,
+        board: game.board,
+        deck: game.deck,
+        room: game.room,
+        players: game.players
+      })
     end
 
     render json: {

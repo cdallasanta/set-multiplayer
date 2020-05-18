@@ -56,12 +56,22 @@ class App extends React.Component {
       game: null
     })
   }
+
+  broadcastReceived = data => {
+    this.setState({
+      game: data
+    });
+  }
   
   render() {
     return (
       <div className="App">
         {this.state.currentUser !== "" ?
-          <Game gameData={this.state.game} handleLogout={this.handleLogout} /> :
+          <Game gameData={this.state.game}
+            handleLogout={this.handleLogout}
+            CableApp={this.props.CableApp}
+            broadcastReceived={this.broadcastReceived}
+          /> :
           <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
         }
       </div>
