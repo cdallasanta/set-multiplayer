@@ -1,6 +1,7 @@
 require 'securerandom'
 
 class Game < ApplicationRecord
+  has_many :players
   before_create :init
 
   def init
