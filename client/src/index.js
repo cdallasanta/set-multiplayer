@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import actionCable from 'actioncable';
+import { API_WS_ROOT } from './constants';
+
+const CableApp = {}
+
+CableApp.cable = actionCable.createConsumer(API_WS_ROOT);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App CableApp={CableApp} />
   </React.StrictMode>,
   document.getElementById('root')
 );
