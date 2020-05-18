@@ -1,5 +1,5 @@
 import React from 'react';
-import Game from './components/game';
+import Game from './containers/game';
 import Login from './components/login';
 import { API_ROOT, HEADERS } from './constants';
 
