@@ -1,6 +1,6 @@
 import React from 'react';
 import GameWebSocket from '../components/gameWebSocket';
-import CARDS from '../constants/cards';
+import Board from './board';
 
 class Game extends React.Component {
   state = {
@@ -27,6 +27,8 @@ class Game extends React.Component {
           gameId={this.props.gameData.id}
           broadcastReceived={this.props.broadcastReceived}
         />
+      
+      <Board cards={this.props.gameData.board} />
     </>
   }
 }

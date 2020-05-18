@@ -1,17 +1,21 @@
 import React from 'react';
+import '../stylesheets/cards.scss';
 
-export const Card = ({id, color, number, shape, shading}) => {
-  shapes = () => {
-    let shapes = [];
-    for (i = 0; i< number; i++){
-      shapes += <div className={`${color} ${shape} ${shading}`}></div>
-    }
-    return shapes;
-  }
+const Card = (props) => {
+  // shapes = () => {
+  //   let shapes = [];
+  //   for (i = 0; i< number; i++){
+  //     shapes += <div className={`${color} ${shape} ${shading}`}></div>
+  //   }
+  //   return shapes;
+  // }
+  debugger;
   
   return (
-    <div className={`card-holder`} id={id}>
-      {showShapes()}
+    <div className={`card-holder`} id={0}>
+      {/* {showShapes()} */}
     </div>
   )
 }
+
+export default Card;
