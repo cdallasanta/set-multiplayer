@@ -1,4 +1,5 @@
 import React from 'react';
+import CARDS from '../constants/cards';
 
 class Game extends React.Component {
   state = {
