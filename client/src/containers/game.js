@@ -1,5 +1,5 @@
 import React from 'react';
-import GameWebSocket from './gameWebSocket';
+import GameWebSocket from '../components/gameWebSocket';
 import CARDS from '../constants/cards';
 
 class Game extends React.Component {
