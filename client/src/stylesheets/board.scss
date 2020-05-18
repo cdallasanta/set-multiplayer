@@ -1,0 +1,14 @@
+#board {
+  padding-top:20px;
+  background-color:#f1f1f1;
+  box-shadow:0 0 5px 5px #f1f1f1;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  max-width:800px;
+  height:auto;
+  gap:10px;
+  justify-items:center;
+  align-items:center;
+  margin:auto;
+  padding:1vh 1vw;
+}

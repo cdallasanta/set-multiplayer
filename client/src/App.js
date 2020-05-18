@@ -62,6 +62,25 @@ class App extends React.Component {
       game: data
     });
   }
+
+  sendMatch = (cards) => {
+    fetch(`${API_ROOT}/games/${this.state.room}`, {
+      method: "PATCH",
+      headers: HEADERS,
+      body: JSON.stringify({
+        game: {
+          room: this.state.room,
+          username: this.state.currentUser,
+          cards: cards
+        }
+      })
+    }).then(resp => resp.json())
+      .then(resp => {
+        if (resp.status === "error") {
+          console.log(resp.message);
+        }
+      })
+  }
   
   render() {
     return (
@@ -71,6 +90,7 @@ class App extends React.Component {
             handleLogout={this.handleLogout}
             CableApp={this.props.CableApp}
             broadcastReceived={this.broadcastReceived}
+            sendMatch={this.sendMatch}
           /> :
           <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
         }

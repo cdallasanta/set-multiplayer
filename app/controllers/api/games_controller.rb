@@ -46,6 +46,37 @@ class Api::GamesController < ApplicationController
   end
 
   def update
+    game = Game.find_by(room:game_params[:room])
+    game_params[:cards].each do |card|
+      game.board[game.board.index(card)] = game.deck.pop()
+    end
+    player = game.players.find_by(name:game_params[:username])
+    player.score += 1
+
+    if game.save
+      GamesChannel.broadcast_to(game, {
+        id: game.id,
+        board: game.board,
+        deck: game.deck,
+        room: game.room,
+        players: game.players
+      })
+      
+      render json: {
+        status: "success",
+        code: 200,
+        game: {
+          id: game.id,
+          board: game.board,
+          deck: game.deck,
+          room: game.room,
+          players: game.players
+        }
+      }
+    else
+      render json: {status: "error", code: 400, message: "something went wrong when saving"}
+    end
+
   end
 
   private
@@ -53,7 +84,9 @@ class Api::GamesController < ApplicationController
   def game_params
     params.require(:game).permit(
       :id,
+      :room,
       :username,
+      cards: [],
       drawn_cards: []
     )
   end
