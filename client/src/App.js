@@ -6,16 +6,25 @@ import { API_ROOT, HEADERS } from './constants';
 class App extends React.Component {
   state = {
     currentUser: "",
-    room: ""
+    room: "",
+    game: null
   }
 
   handleSignIn = (e, data) => {
     e.preventDefault();
     
-    fetch(`${API_ROOT}/games/${data.room}?name=${data.username}`)
+    fetch(`${API_ROOT}/games/${data.room}?username=${data.username}`)
       .then(resp => resp.json())
-      .then(data => {
-        debugger;
+      .then(resp => {
+        if (resp.status === "success"){
+          this.setState({
+            currentUser: data.username,
+            room: resp.game.room,
+            game: resp.game
+          });
+        } else {
+          console.log(resp.message);
+        }
       });
   }
 
@@ -27,16 +36,32 @@ class App extends React.Component {
       method: "POST"
     })
       .then(resp => resp.json())
-      .then(data => {
-        debugger;
+      .then(resp => {
+        if (resp.status === "success"){
+          this.setState({
+            currentUser: username,
+            room: resp.game.room,
+            game: resp.game
+          });
+        } else {
+          console.log(resp.message);
+        }
       });
+  }
+
+  handleLogout = () => {
+    this.setState({
+      currentUser: "",
+      room: "",
+      game: null
+    })
   }
   
   render() {
     return (
       <div className="App">
         {this.state.currentUser !== "" ?
-          <Game /> :
+          <Game gameData={this.state.game} handleLogout={this.handleLogout} /> :
           <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
         }
       </div>
