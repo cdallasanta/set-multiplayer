@@ -1,6 +1,6 @@
 const CARDS = [];
 
-const COLORS = ["red", "blue", "purple"];
+const COLORS = ["red", "blue", "green"];
 const SHADING = ["solid", "striped", "empty"];
 const SHAPE = ["diamond", "oval", "squiggle"];
 const NUMBER = [1,2,3];

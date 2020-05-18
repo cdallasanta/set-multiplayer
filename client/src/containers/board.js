@@ -3,9 +3,18 @@ import Card from '../components/card';
 import CARDS from '../constants/cards';
 
 class Board extends React.Component {
-  render(){
-    return <Card data={CARDS[this.props.cards[0]]} />
+  showCards = () => {
+    return this.props.cards.map((cardId, i) => {
+      return <Card data={CARDS[cardId]} kei={i} />
+    })
   }
+
+  render(){
+    return (
+      <div className="board">
+        {this.showCards()}
+      </div>
+    )}
 }
 
 export default Board;
