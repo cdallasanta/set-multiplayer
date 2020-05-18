@@ -11,9 +11,8 @@ class App extends React.Component {
 
   handleSignIn = (e, data) => {
     e.preventDefault();
-    fetch(`${API_ROOT}/games/${data.room}?name=${data.username}`, {
-      headers: HEADERS
-    })
+    
+    fetch(`${API_ROOT}/games/${data.room}?name=${data.username}`)
       .then(resp => resp.json())
       .then(data => {
         debugger;
