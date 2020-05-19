@@ -64,7 +64,8 @@ class Api::GamesController < ApplicationController
       player.save
     when "draw 3"
       game = Game.find_by(room: params[:id])
-      game.players.find_by(name:game_params).update(status:"draw")
+      player = game.players.find_by(name:game_params[:username])
+      player.status == "draw" ? player.update(status: "") : player.update(status: "draw")
 
       if game.players.all?{|p| p.status == "draw"}
         game.board.push(*game.deck.shift(3))

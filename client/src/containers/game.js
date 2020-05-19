@@ -46,7 +46,10 @@ class Game extends React.Component {
   drawThree = () => { 
     fetch(`${API_ROOT}/games/${this.props.room}`,{
       headers: HEADERS,
-      body: JSON.stringify({actionToTake: "draw 3"}),
+      body: JSON.stringify({
+        actionToTake: "draw 3",
+        game: {username: this.props.currentUser}
+      }),
       method: "PATCH"
     })
   }
