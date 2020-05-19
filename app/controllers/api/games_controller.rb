@@ -68,6 +68,9 @@ class Api::GamesController < ApplicationController
 
       if game.players.all?{|p| p.status == "draw"}
         game.board.push(*game.deck.shift(3))
+        game.players.each do |player|
+          player.update(status: "")
+        end
       end
     end
 
