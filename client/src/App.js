@@ -75,7 +75,8 @@ class App extends React.Component {
     this.setState({
       currentUser: "",
       room: "",
-      game: null
+      game: null,
+      errorMessage: ""
     })
   }
 
@@ -103,15 +104,6 @@ class App extends React.Component {
           console.log(resp.message);
         }
       })
-  }
-
-  clearGameData = () => {
-    this.setState({
-      currentUser: "",
-      room: "",
-      game: null,
-      errorMessage: ""
-    });
   }
   
   render() {

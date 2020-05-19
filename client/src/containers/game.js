@@ -82,7 +82,7 @@ class Game extends React.Component {
           <button onClick={() => this.vote("end game")}>End game</button>
         </>
       case "ended":
-        return <button onClick={this.props.clearGameData}>Back to lobby</button>
+        return null
     }
   }
 
