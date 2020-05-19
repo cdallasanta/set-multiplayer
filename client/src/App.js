@@ -32,7 +32,7 @@ class App extends React.Component {
     e.preventDefault();
     fetch(`${API_ROOT}/games`, {
       headers: HEADERS,
-      body: {name: username},
+      body: JSON.stringify({game: {username: username}}),
       method: "POST"
     })
       .then(resp => resp.json())
@@ -72,7 +72,8 @@ class App extends React.Component {
           room: this.state.room,
           username: this.state.currentUser,
           cards: cards
-        }
+        },
+        actionToTake: "score"
       })
     }).then(resp => resp.json())
       .then(resp => {

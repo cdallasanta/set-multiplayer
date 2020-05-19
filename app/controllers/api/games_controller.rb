@@ -4,13 +4,13 @@ class Api::GamesController < ApplicationController
     game.players << Player.create(name: game_params[:username])
     render json: {
       status: "success",
-      code: 200,
+      code: 201,
       game: {
         id: game.id,
         board: game.board,
         deck: game.deck,
         room: game.room,
-        players: game.players
+        players: game.players.sort_by(&:score).reverse
       }
     }
   end
@@ -28,7 +28,7 @@ class Api::GamesController < ApplicationController
         board: game.board,
         deck: game.deck,
         room: game.room,
-        players: game.players
+        players: game.players.sort_by(&:score).reverse
       })
     end
 
@@ -40,18 +40,30 @@ class Api::GamesController < ApplicationController
         board: game.board,
         deck: game.deck,
         room: game.room,
-        players: game.players
+        players: game.players.sort_by(&:score).reverse
       }
     }
   end
 
   def update
-    game = Game.find_by(room:game_params[:room])
-    game_params[:cards].each do |card|
-      game.board[game.board.index(card)] = game.deck.pop()
+    case params[:actionToTake]
+    when "score"
+      game = Game.find_by(room:game_params[:room])
+      game_params[:cards].each do |card|
+        if game.board.length <= 12
+          game.board[game.board.index(card)] = game.deck.pop()
+        else
+          game.board[game.board.index(card)] = nil
+        end
+      end
+      game.board.compact
+
+      player = game.players.find_by(name:game_params[:username])
+      player.score += 1
+      player.save
+    when "draw 3"
+      game.board.push(*game.deck.shift(3))
     end
-    player = game.players.find_by(name:game_params[:username])
-    player.score += 1
 
     if game.save
       GamesChannel.broadcast_to(game, {
@@ -59,19 +71,12 @@ class Api::GamesController < ApplicationController
         board: game.board,
         deck: game.deck,
         room: game.room,
-        players: game.players
+        players: game.players.sort_by(&:score).reverse
       })
       
       render json: {
         status: "success",
-        code: 200,
-        game: {
-          id: game.id,
-          board: game.board,
-          deck: game.deck,
-          room: game.room,
-          players: game.players
-        }
+        code: 200
       }
     else
       render json: {status: "error", code: 400, message: "something went wrong when saving"}
