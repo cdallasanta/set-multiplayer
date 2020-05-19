@@ -104,6 +104,15 @@ class App extends React.Component {
         }
       })
   }
+
+  clearGameData = () => {
+    this.setState({
+      currentUser: "",
+      room: "",
+      game: null,
+      errorMessage: ""
+    });
+  }
   
   render() {
     return (
@@ -116,6 +125,7 @@ class App extends React.Component {
             sendMatch={this.sendMatch}
             room={this.state.game.room}
             currentUser={this.state.currentUser}
+            clearGameData={this.clearGameData}
           /> :
           <Login handleSignIn={this.handleSignIn}
             createGame={this.createGame} 

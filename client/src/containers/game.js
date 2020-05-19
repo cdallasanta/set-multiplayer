@@ -60,14 +60,15 @@ class Game extends React.Component {
   }
 
   board = () => {
-    if (this.props.gameData.status === "started") {
-      return <Board cards={this.props.gameData.board}
-        selectCard={this.selectCard}
-        selectedCards={this.state.selectedCards} />
-    } else if (this.props.gameData.status === "ended") {
-      return <div>Game Over</div>
-    } else {
-      return <div>Waiting for all players to be ready.</div>
+    switch (this.props.gameData.status) {
+      case "started":
+        return <Board cards={this.props.gameData.board}
+          selectCard={this.selectCard}
+          selectedCards={this.state.selectedCards} />
+      case "ended":
+        return <div>Game Over</div>
+      case "not started":
+        return <div>Waiting for all players to be ready.</div>
     }
   }
 
@@ -81,7 +82,7 @@ class Game extends React.Component {
           <button onClick={() => this.vote("end game")}>End game</button>
         </>
       case "ended":
-        return null
+        return <button onClick={this.props.clearGameData}>Back to lobby</button>
     }
   }
 
