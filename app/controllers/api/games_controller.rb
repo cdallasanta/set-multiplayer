@@ -46,6 +46,7 @@ class Api::GamesController < ApplicationController
   end
 
   def update
+    game = nil
     case params[:actionToTake]
     when "score"
       game = Game.find_by(room:game_params[:room])
@@ -56,12 +57,13 @@ class Api::GamesController < ApplicationController
           game.board[game.board.index(card)] = nil
         end
       end
-      game.board.compact
-
+      game.board.compact!
+      
       player = game.players.find_by(name:game_params[:username])
       player.score += 1
       player.save
     when "draw 3"
+      game = Game.find_by(room: params[:id])
       game.board.push(*game.deck.shift(3))
     end
 

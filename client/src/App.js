@@ -92,6 +92,7 @@ class App extends React.Component {
             CableApp={this.props.CableApp}
             broadcastReceived={this.broadcastReceived}
             sendMatch={this.sendMatch}
+            room={this.state.game.room}
           /> :
           <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
         }

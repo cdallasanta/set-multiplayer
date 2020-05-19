@@ -2,7 +2,7 @@ import React from 'react';
 import GameWebSocket from '../components/gameWebSocket';
 import Board from './board';
 import { checkForMatch } from '../constants/gameLogic';
-import { API_ROOT } from '../constants';
+import { API_ROOT, HEADERS } from '../constants';
 
 class Game extends React.Component {
   state = {
@@ -40,6 +40,14 @@ class Game extends React.Component {
     }
   }
 
+  drawThree = () => { 
+    fetch(`${API_ROOT}/games/${this.props.room}`,{
+      headers: HEADERS,
+      body: JSON.stringify({actionToTake: "draw 3"}),
+      method: "PATCH"
+    })
+  }
+
   render() {
     return <>
       Game: {this.props.gameData.room}
@@ -47,6 +55,7 @@ class Game extends React.Component {
         {this.listNames()}
       </ul>
       <button onClick={this.props.handleLogout}>Logout</button>
+      <button onClick={this.drawThree}>Draw 3 more</button>
 
       <Board cards={this.props.gameData.board}
         selectCard={this.selectCard}
