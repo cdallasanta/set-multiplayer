@@ -12,9 +12,16 @@ class Login extends React.Component {
     });
   }
 
+  showError = () => {
+    return (
+      <div className="alert">{this.props.errorMessage}</div>
+    )
+  }
+
   render() {
     return <div>
       <h1>Welcome to Set!</h1>
+      {this.props.errorMessage !== "" ? this.showError() : null}
       <form onSubmit={e => this.props.handleSignIn(e, this.state)}>
         <div>
           What is your name? <input value={this.state.username} onChange={this.handleChange} name="username" placeholder="username" />

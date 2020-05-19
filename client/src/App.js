@@ -7,46 +7,68 @@ class App extends React.Component {
   state = {
     currentUser: "",
     room: "",
-    game: null
+    game: null,
+    errorMessage: ""
   }
 
   handleSignIn = (e, data) => {
     e.preventDefault();
     
-    fetch(`${API_ROOT}/games/${data.room}?username=${data.username}`)
-      .then(resp => resp.json())
-      .then(resp => {
-        if (resp.status === "success"){
-          this.setState({
-            currentUser: data.username,
-            room: resp.game.room,
-            game: resp.game
-          });
-        } else {
-          console.log(resp.message);
-        }
+    if (data.username === ""){
+      this.setState({
+        errorMessage: "Please enter a username"
       });
+    } else if (data.room === "" || data.room.length !== 4){
+      this.setState({
+        errorMessage: "Please enter a 4 digit room code"
+      });
+    } else {
+      fetch(`${API_ROOT}/games/${data.room}?username=${data.username}`)
+        .then(resp => resp.json())
+        .then(resp => {
+          if (resp.status === "success"){
+            this.setState({
+              currentUser: data.username,
+              room: resp.game.room,
+              game: resp.game
+            });
+          } else {
+            this.setState({
+              errorMesage: resp.message
+            });
+          }
+        });
+    }
   }
 
   createGame = (e, username) => {
     e.preventDefault();
-    fetch(`${API_ROOT}/games`, {
-      headers: HEADERS,
-      body: JSON.stringify({game: {username: username}}),
-      method: "POST"
-    })
-      .then(resp => resp.json())
-      .then(resp => {
-        if (resp.status === "success"){
-          this.setState({
-            currentUser: username,
-            room: resp.game.room,
-            game: resp.game
-          });
-        } else {
-          console.log(resp.message);
-        }
+    
+    if (username === ""){
+      this.setState({
+        errorMessage: "Please enter a username"
       });
+    } else {
+      fetch(`${API_ROOT}/games`, {
+        headers: HEADERS,
+        body: JSON.stringify({game: {username: username}}),
+        method: "POST"
+      })
+        .then(resp => resp.json())
+        .then(resp => {
+          if (resp.status === "success"){
+            this.setState({
+              currentUser: username,
+              room: resp.game.room,
+              game: resp.game
+            });
+          } else {
+            this.setState({
+              errorMesage: resp.message
+            });
+          }
+        });
+    }
   }
 
   handleLogout = () => {
@@ -95,7 +117,9 @@ class App extends React.Component {
             room={this.state.game.room}
             currentUser={this.state.currentUser}
           /> :
-          <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
+          <Login handleSignIn={this.handleSignIn}
+            createGame={this.createGame} 
+            errorMessage={this.state.errorMessage}/>
         }
       </div>
     )
