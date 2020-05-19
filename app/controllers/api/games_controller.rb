@@ -18,7 +18,7 @@ class Api::GamesController < ApplicationController
   def show
     game = Game.find_by(room: params[:id])
     if game.nil?
-      render json: {status: "error", code: 404, message: "Game not found with that code"}
+      render json: {status: "error", code: 404, message: "Game not found with that code"} and return
     end
 
     if !game.players.any? {|p| p.name == params[:username]}

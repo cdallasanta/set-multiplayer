@@ -93,6 +93,7 @@ class App extends React.Component {
             broadcastReceived={this.broadcastReceived}
             sendMatch={this.sendMatch}
             room={this.state.game.room}
+            currentUser={this.state.currentUser}
           /> :
           <Login handleSignIn={this.handleSignIn} createGame={this.createGame} />
         }
