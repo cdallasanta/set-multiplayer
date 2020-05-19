@@ -49,29 +49,52 @@ class Api::GamesController < ApplicationController
   end
 
   def update
-    game = nil
+    game = Game.find_by(room:game_params[:room])
+    player = game.players.find_by(name:game_params[:username])
+
     case params[:actionToTake]
     when "score"
-      game = Game.find_by(room:game_params[:room])
       game_params[:cards].each do |card|
-        if game.board.length <= 12
-          game.board[game.board.index(card)] = game.deck.pop()
+        index = game.board.index(card)
+        if index.nil?
+          render json: {
+            status: "error",
+            code: 400,
+            message: "card not present, probably becuse someone submitted one of those cards at the same time."
+          } and return
+        elsif game.board.length <= 12
+          game.board[index] = game.deck.pop()
         else
-          game.board[game.board.index(card)] = nil
+          game.board[index] = nil
         end
       end
       game.board.compact!
       
-      player = game.players.find_by(name:game_params[:username])
       player.score += 1
       player.save
-    when "draw 3"
-      game = Game.find_by(room: params[:id])
-      player = game.players.find_by(name:game_params[:username])
+    when "draw"
       player.status == "draw" ? player.update(status: "") : player.update(status: "draw")
 
       if game.players.all?{|p| p.status == "draw"}
         game.board.push(*game.deck.shift(3))
+        game.players.each do |player|
+          player.update(status: "")
+        end
+      end
+    when "ready"
+      player.status == "ready" ? player.update(status: "") : player.update(status: "ready")
+
+      if game.players.all?{|p| p.status == "ready"}
+        game.status = "started"
+        game.players.each do |player|
+          player.update(status: "")
+        end
+      end
+    when "end game"
+      player.status == "end game" ? player.update(status: "") : player.update(status: "end game")
+
+      if game.players.all?{|p| p.status == "end game"}
+        game.status = "ended"
         game.players.each do |player|
           player.update(status: "")
         end
