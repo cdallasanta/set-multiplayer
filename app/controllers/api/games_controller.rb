@@ -7,6 +7,7 @@ class Api::GamesController < ApplicationController
       code: 201,
       game: {
         id: game.id,
+        status: game.status,
         board: game.board,
         deck: game.deck,
         room: game.room,
@@ -25,6 +26,7 @@ class Api::GamesController < ApplicationController
       game.players << Player.create(name: params[:username])
       GamesChannel.broadcast_to(game, {
         id: game.id,
+        status: game.status,
         board: game.board,
         deck: game.deck,
         room: game.room,
@@ -37,6 +39,7 @@ class Api::GamesController < ApplicationController
       code: 200,
       game: {
         id: game.id,
+        status: game.status,
         board: game.board,
         deck: game.deck,
         room: game.room,
@@ -78,6 +81,7 @@ class Api::GamesController < ApplicationController
     if game.save
       GamesChannel.broadcast_to(game, {
         id: game.id,
+        status: game.status,
         board: game.board,
         deck: game.deck,
         room: game.room,
