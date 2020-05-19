@@ -13,7 +13,7 @@ class Game extends React.Component {
     return this.props.gameData.players.map((player, i) => {
       return <li key={i}
       className={player.name === this.props.currentUser ? "strong" : ""}>
-        {player.name}: {player.score}
+        {player.name}: {player.score}{player.status !== "" ? ` - ${player.status}` : ""}
       </li>
     })
   }

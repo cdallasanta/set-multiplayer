@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_172251) do
     t.integer "game_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "status"
+    t.string "status", default: ""
   end
 
 end
